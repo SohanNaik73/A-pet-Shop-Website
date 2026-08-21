@@ -1,5 +1,4 @@
-// Replace this with your copied Google Web App URL
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdJaFeIUq5vu89AMF0gqumC8PWA-M405AAGZGscsRZaWR4Sr0nhuFdVLHCcELKgnEj/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOfXHntnhl0cwjSJ7ArJwyBN-CNLOJfh60EuOd12emzIQmLhj7443wEotDz6hmxOT2/exec';
 
 document.getElementById('loginForm').addEventListener('submit', function (event) {
   event.preventDefault();
@@ -8,36 +7,32 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
   submitBtn.innerText = 'Submitting...';
   submitBtn.disabled = true;
 
-  const formData = {
-    name: document.getElementById('name').value,
-    petChoice: document.getElementById('petChoice').value,
-    email: document.getElementById('email').value,
-    password: document.getElementById('password').value
-  };
+  // Prepare parameters
+  const formData = new URLSearchParams();
+  formData.append('name', document.getElementById('name').value);
+  formData.append('petChoice', document.getElementById('petChoice').value);
+  formData.append('email', document.getElementById('email').value);
+  formData.append('password', document.getElementById('password').value);
 
-  // Send data to Google Sheets via fetch API
+  // Send request
   fetch(GOOGLE_SCRIPT_URL, {
     method: 'POST',
-    mode: 'no-cors', // Required for Google Script cross-origin requests
+    mode: 'no-cors',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: JSON.stringify(formData)
+    body: formData.toString()
   })
   .then(() => {
-    alert('Login submission successfully sent to Google Sheets!');
+    alert('Submitted successfully! Check your Google Sheet.');
     document.getElementById('loginForm').reset();
   })
   .catch((error) => {
-    console.error('Error:', error);
-    alert('Something went wrong. Please try again.');
+    console.error('Submission error:', error);
+    alert('Submission failed. Check developer console (F12).');
   })
   .finally(() => {
     submitBtn.innerText = 'Login';
     submitBtn.disabled = false;
   });
 });
-
-function showMessage() {
-  alert("Thank you for your interest! Please choose your pet in the login section below.");
-}
