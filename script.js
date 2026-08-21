@@ -1,4 +1,4 @@
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOfXHntnhl0cwjSJ7ArJwyBN-CNLOJfh60EuOd12emzIQmLhj7443wEotDz6hmxOT2/exec';
+const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL';
 
 document.getElementById('loginForm').addEventListener('submit', function (event) {
   event.preventDefault();
@@ -7,32 +7,22 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
   submitBtn.innerText = 'Submitting...';
   submitBtn.disabled = true;
 
-  // Prepare parameters
-  const formData = new URLSearchParams();
-  formData.append('name', document.getElementById('name').value);
-  formData.append('petChoice', document.getElementById('petChoice').value);
-  formData.append('email', document.getElementById('email').value);
-  formData.append('password', document.getElementById('password').value);
+  const name = encodeURIComponent(document.getElementById('name').value);
+  const petChoice = encodeURIComponent(document.getElementById('petChoice').value);
+  const email = encodeURIComponent(document.getElementById('email').value);
+  const password = encodeURIComponent(document.getElementById('password').value);
 
-  // Send request
-  fetch(GOOGLE_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: formData.toString()
-  })
-  .then(() => {
-    alert('Submitted successfully! Check your Google Sheet.');
+  // Construct query URL
+  const requestUrl = `${GOOGLE_SCRIPT_URL}?name=${name}&petChoice=${petChoice}&email=${email}&password=${password}`;
+
+  // Send via image tag to completely bypass CORS blocks
+  const img = new Image();
+  img.src = requestUrl;
+
+  img.onload = img.onerror = function() {
+    alert('Submitted! Check your Google Sheet now.');
     document.getElementById('loginForm').reset();
-  })
-  .catch((error) => {
-    console.error('Submission error:', error);
-    alert('Submission failed. Check developer console (F12).');
-  })
-  .finally(() => {
     submitBtn.innerText = 'Login';
     submitBtn.disabled = false;
-  });
+  };
 });
