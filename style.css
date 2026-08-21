@@ -108,7 +108,7 @@ nav a:hover {
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
   text-align: center;
 }
 
@@ -136,16 +136,26 @@ nav a:hover {
   margin-bottom: 5px;
 }
 
-.input-group input {
+/* Common styles for text, email, password inputs and select dropdown */
+.input-group input,
+.input-group select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
   outline: none;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.2s ease;
 }
 
-.input-group input:focus {
+.input-group select {
+  cursor: pointer;
+}
+
+.input-group input:focus,
+.input-group select:focus {
   border-color: #ff914d;
 }
 
@@ -160,6 +170,7 @@ nav a:hover {
   font-weight: bold;
   cursor: pointer;
   margin-top: 10px;
+  transition: background 0.2s ease;
 }
 
 .btn-login:hover {
